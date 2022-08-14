@@ -1,12 +1,12 @@
 # HttpMock
 
-Convinient methods to mock HttpClient and HttpMessageHandler.
+Convenient methods to mock HttpClient and HttpMessageHandler.
 
-The solution consists of a MockingHandler class derived from HttpMessageHandler that returns the expected response from the provided http status codes, response messages, or factory method. 
+The solution consists of a MockingHandler class derived from HttpMessageHandler. MockingHandler returns a response from the provided http status codes, response messages, or factory methods provided in the constructors. 
 
-It is also included corresponding static "CreateHttpClient" methods to facilitate its use.    
+It is also included corresponding static "CreateHttpClient" factory methods to facilitate its use.    
 
-Examples of its use can be found in the Unit Tests, from the simpler one: returning a given HttpStatusCode:
+Examples can be found in the Unit Tests, from the simpler one: returning a given HttpStatusCode:
 
 ``` C#
 [Theory]
@@ -31,7 +31,7 @@ public async Task HttpClientReturns_RequestedHttpStatusCode(HttpStatusCode code)
 }
 ```
 
-to te more complex one where the response depends on the request:
+to the more complex one where the response depends on the request:
 
 ``` C#
 [Theory]
