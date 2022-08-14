@@ -53,22 +53,24 @@ public class UnitTest
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact]
-    public async Task HttpClientReturns_RequestedHttpResponse_FromFactoryWithRequest()
+    [Theory]
+    [InlineData("token", HttpStatusCode.OK)]
+    [InlineData("no-token", HttpStatusCode.BadRequest)]
+    public async Task HttpClientReturns_RequestedHttpResponse_FromFactoryWithRequest(string url, HttpStatusCode code)
     {
         // Arrange
+
+        Uri uri = new(url, UriKind.Relative);
 
         static Task<HttpResponseMessage> factory(HttpRequestMessage request)
         {
             string path = request.RequestUri!.AbsoluteUri;
 
-            return path.EndsWith("token")
+            return path.EndsWith("/token")
                 ? Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK))
                 : Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest));
 
         }
-
-        Uri uri = new("token", UriKind.Relative);
 
         var sut = CreateHttpClient(factory);
 
@@ -77,7 +79,7 @@ public class UnitTest
         var response = await sut.GetAsync(uri);
 
         // Assert
-        
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        Assert.Equal(code, response.StatusCode);
     }
 }
