@@ -6,7 +6,29 @@ The solution consists of a MockingHandler class derived from HttpMessageHandler 
 
 It is also included corresponding static "CreateHttpClient" methods to facilitate its use.    
 
-Example of its use:
+Examples of its use can be found in the Unit Tests, from the simpler one: returning a given HttpStatusCode:
+
+``` C#
+[Theory]
+    [InlineData(HttpStatusCode.OK)]
+    [InlineData(HttpStatusCode.BadRequest)]
+    [InlineData(HttpStatusCode.Unauthorized)]
+    public async Task HttpClientReturns_RequestedHttpStatusCode(HttpStatusCode code)
+    {
+        // Arrange
+        Uri? uri = null;
+
+        var sut = CreateHttpClient(code);
+
+        // Act
+        var response = await sut.GetAsync(uri);
+
+        // Assert
+        Assert.Equal(code, response.StatusCode);
+    }
+```
+
+to te more complex one where the response depends on the request:
 
 ``` C#
 [Theory]
