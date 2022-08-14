@@ -10,22 +10,25 @@ Examples of its use can be found in the Unit Tests, from the simpler one: return
 
 ``` C#
 [Theory]
-    [InlineData(HttpStatusCode.OK)]
-    [InlineData(HttpStatusCode.BadRequest)]
-    [InlineData(HttpStatusCode.Unauthorized)]
-    public async Task HttpClientReturns_RequestedHttpStatusCode(HttpStatusCode code)
-    {
-        // Arrange
-        Uri? uri = null;
+[InlineData(HttpStatusCode.OK)]
+[InlineData(HttpStatusCode.BadRequest)]
+[InlineData(HttpStatusCode.Unauthorized)]
+public async Task HttpClientReturns_RequestedHttpStatusCode(HttpStatusCode code)
+{
+    // Arrange
+    
+    Uri? uri = null;
 
-        var sut = CreateHttpClient(code);
+    var sut = CreateHttpClient(code);
 
-        // Act
-        var response = await sut.GetAsync(uri);
+    // Act
+    
+    var response = await sut.GetAsync(uri);
 
-        // Assert
-        Assert.Equal(code, response.StatusCode);
-    }
+    // Assert
+    
+    Assert.Equal(code, response.StatusCode);
+}
 ```
 
 to te more complex one where the response depends on the request:
