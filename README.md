@@ -2,9 +2,9 @@
 
 Convinient methods to mock HttpClient and HttpMessageHandler.
 
-The solution consists of a MOckingHandler class derived from HttpMessageHandler that allows to provided the expected http status codes, response messages, or a factory method. 
+The solution consists of a MockingHandler class derived from HttpMessageHandler that returns the expected response from the provided http status codes, response messages, or factory method. 
 
-It also provides corresponding static "CreateHttpClient" methods to facilitate its use.    
+It is also included corresponding static "CreateHttpClient" methods to facilitate its use.    
 
 Example of its use:
 
