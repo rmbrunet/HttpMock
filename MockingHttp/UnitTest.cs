@@ -1,3 +1,4 @@
+using static MockingHttp.HttpMock;
 namespace MockingHttp;
 
 public class UnitTest
@@ -5,46 +6,58 @@ public class UnitTest
     [Fact]
     public async Task HttpClientReturns_RequestedHttpStatusCode()
     {
-        var client = HttpMock.CreateHttpClient(HttpStatusCode.OK);
-
+        // Arrange
         Uri? uri = null;
 
-        var response = await client.GetAsync(uri);
+        var sut = CreateHttpClient(HttpStatusCode.OK);
 
+
+        // Act
+        var response = await sut.GetAsync(uri);
+
+        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
     public async Task HttpClientReturns_RequestedHttpResponse_FromValue()
     {
+        // Arrange
         HttpResponseMessage expected = new(HttpStatusCode.OK);
-
-        var client = HttpMock.CreateHttpClient(expected);
 
         Uri? uri = null;
 
-        var response = await client.GetAsync(uri);
+        var sut = CreateHttpClient(expected);
 
+        // Act
+        var response = await sut.GetAsync(uri);
+
+        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
     public async Task HttpClientReturns_RequestedHttpResponse_FromFactory()
     {
+        // Arrange
         HttpResponseMessage expected = new(HttpStatusCode.OK);
-
-        var client = HttpMock.CreateHttpClient(() => Task.FromResult(expected));
 
         Uri? uri = null;
 
+        var client = CreateHttpClient(() => Task.FromResult(expected));
+
+        // Act
         var response = await client.GetAsync(uri);
 
+        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
     public async Task HttpClientReturns_RequestedHttpResponse_FromFactoryWithRequest()
     {
+        // Arrange
+
         Func<HttpRequestMessage, Task<HttpResponseMessage>> factory = request =>
         {
             string path = request.RequestUri!.AbsoluteUri;
@@ -55,12 +68,16 @@ public class UnitTest
 
         };
 
-        var client = HttpMock.CreateHttpClient(factory);
+        Uri uri = new("token", UriKind.Relative);
 
-        Uri uri = new Uri("token", UriKind.Relative);
+        var sut = CreateHttpClient(factory);
 
-        var response = await client.GetAsync(uri);
+        // Act
 
+        var response = await sut.GetAsync(uri);
+
+        // Assert
+        
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }
