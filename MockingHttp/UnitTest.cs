@@ -3,24 +3,27 @@ namespace MockingHttp;
 
 public class UnitTest
 {
-    [Fact]
-    public async Task HttpClientReturns_RequestedHttpStatusCode()
+    [Theory]
+    [InlineData(HttpStatusCode.OK)]
+    [InlineData(HttpStatusCode.BadRequest)]
+    [InlineData(HttpStatusCode.Unauthorized)]
+    public async Task HttpClientReturns_RequestedHttpStatusCode(HttpStatusCode code)
     {
         // Arrange
         Uri? uri = null;
 
-        var sut = CreateHttpClient(HttpStatusCode.OK);
+        var sut = CreateHttpClient(code);
 
 
         // Act
         var response = await sut.GetAsync(uri);
 
         // Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(code, response.StatusCode);
     }
 
     [Fact]
-    public async Task HttpClientReturns_RequestedHttpResponse_FromValue()
+    public async Task HttpClientReturns_RequestedHttpResponse()
     {
         // Arrange
         HttpResponseMessage expected = new(HttpStatusCode.OK);
