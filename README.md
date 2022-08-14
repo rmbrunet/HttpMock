@@ -2,13 +2,13 @@
 
 Convinient methods to mock HttpClient and HttpMessageHandler.
 
-The solution consists of a HttpMessageHandler derived class (MockingHandler) that allows to provides expected http status codes, response messages, or a factory method. 
-It also provides corresponding static "CreateHttpClient" methods.    
+The solution consists of a MOckingHandler class derived from HttpMessageHandler that allows to provided the expected http status codes, response messages, or a factory method. 
+
+It also provides corresponding static "CreateHttpClient" methods to facilitate its use.    
 
 Example of its use:
 
-
-``` CSharp
+``` C#
 [Theory]
 [InlineData("token", HttpStatusCode.OK)]
 [InlineData("no-token", HttpStatusCode.BadRequest)]
