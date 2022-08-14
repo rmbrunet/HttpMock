@@ -58,7 +58,7 @@ public class UnitTest
     {
         // Arrange
 
-        Func<HttpRequestMessage, Task<HttpResponseMessage>> factory = request =>
+        static Task<HttpResponseMessage> factory(HttpRequestMessage request)
         {
             string path = request.RequestUri!.AbsoluteUri;
 
@@ -66,7 +66,7 @@ public class UnitTest
                 ? Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK))
                 : Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest));
 
-        };
+        }
 
         Uri uri = new("token", UriKind.Relative);
 
